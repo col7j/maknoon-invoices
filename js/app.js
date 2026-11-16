@@ -83,6 +83,7 @@
 
   function updateSummary() {
     const { totals } = MK.calc.compute(inv), f = MK.calc.fmt;
+    $('#mTotal').textContent = f(totals.total) + ' ريال';
     $('#sum').innerHTML =
       '<div><span>الإجمالي الخاضع للضريبة</span><b>' + f(totals.net) + '</b></div>' +
       '<div><span>ضريبة القيمة المضافة</span><b>' + f(totals.vat) + '</b></div>' +
@@ -210,9 +211,18 @@
     $$('.pane').forEach(p => p.hidden = p.id !== 'pane-' + t.dataset.tab);
   }));
 
+  /* ---------- تبديل تحرير/معاينة (الجوال) ---------- */
+  function setView(v) {
+    $('#app').dataset.view = v;
+    $$('#viewSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v));
+    if (v === 'preview') { fitMode = true; requestAnimationFrame(fit); }
+  }
+  $('#viewSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v); });
+  $('#btnPdfM').addEventListener('click', () => $('#btnPdf').click());
+
   /* ---------- التكبير ---------- */
-  $('#zIn').addEventListener('click', () => { fitMode = false; zoom = Math.min(2, zoom + .1); fit(); });
-  $('#zOut').addEventListener('click', () => { fitMode = false; zoom = Math.max(.3, zoom - .1); fit(); });
+  $('#zIn').addEventListener('click', () => { fitMode = false; zoom = Math.min(2, zoom + .2); fit(); });
+  $('#zOut').addEventListener('click', () => { fitMode = false; zoom = Math.max(.3, zoom - .2); fit(); });
   $('#zFit').addEventListener('click', () => { fitMode = true; fit(); });
   window.addEventListener('resize', () => fit());
 
