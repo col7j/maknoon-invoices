@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منصة فواتير مكنون المدينة</title>
+<meta name="description" content="إنشاء فواتير ضريبية بهوية شركة مكنون المدينة مع رمز QR متوافق مع هيئة الزكاة والضريبة والجمارك، وتصديرها PDF.">
+<link rel="icon" href="assets/brand/icon-color.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/invoice.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brandmark"><img src="assets/brand/icon-color.svg" alt=""><span>فواتير مكنون المدينة</span></div>
+    <span class="status" id="status">محفوظ تلقائياً</span>
+    <div class="grow"></div>
+    <button class="btn ghost" id="btnNew" title="فاتورة جديدة"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="lbl">فاتورة جديدة</span></button>
+    <button class="btn ghost" id="btnHist"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg><span class="lbl">السجل</span></button>
+    <button class="btn ghost" id="btnSet"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="lbl">بيانات الشركة</span></button>
+    <button class="btn ghost ib2" id="btnTheme" title="الوضع الداكن / الفاتح"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    <button class="btn primary" id="btnPdf"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg><span>تصدير PDF</span></button>
+  </header>
+
+  <aside class="side">
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="inv">الفاتورة</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="cust">العميل</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="lines">البنود</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="extra">إضافات</button>
+    </nav>
+
+    <div class="pane" id="pane-inv">
+      <div id="warns"></div>
+      <div class="fld"><span>نوع المستند</span>
+        <div class="seg" id="typeSeg">
+          <button data-v="tax">ضريبية</button><button data-v="simplified">مبسطة</button><button data-v="credit">إشعار دائن</button><button data-v="debit">إشعار مدين</button>
+        </div></div>
+      <div class="row2">
+        <label class="fld"><span>رقم الفاتورة</span><input type="text" dir="ltr" data-k="inv:number"></label>
+        <label class="fld" id="refFld" hidden><span>رقم الفاتورة الأصلية</span><input type="text" dir="ltr" data-k="inv:refNumber"></label>
+      </div>
+      <div class="row2">
+        <label class="fld"><span>تاريخ الإصدار</span><input type="date" data-k="inv:date"></label>
+        <label class="fld"><span>وقت الإصدار</span><input type="time" data-k="inv:time"></label>
+      </div>
+      <div class="row2">
+        <label class="fld"><span>تاريخ التوريد (اختياري)</span><input type="date" data-k="inv:supplyDate"></label>
+        <label class="fld"><span>تاريخ الاستحقاق (اختياري)</span><input type="date" data-k="inv:dueDate"></label>
+      </div>
+      <div class="fld"><span>الأسعار المُدخلة</span>
+        <div class="seg" id="inclSeg"><button data-v="1">شاملة الضريبة</button><button data-v="0">غير شاملة</button></div>
+        <small>تُحسب الضريبة (15%) تلقائياً وتظهر مفصّلة في الفاتورة.</small></div>
+    </div>
+
+    <div class="pane" id="pane-cust" hidden>
+      <label class="fld"><span>اسم العميل</span><input type="text" id="custName" list="custList" data-k="inv:customer.name" autocomplete="off"><datalist id="custList"></datalist>
+        <small>اكتب حرفين لاختيار عميل محفوظ وتعبئة بياناته.</small></label>
+      <label class="fld"><span>الرقم الضريبي</span><input type="text" dir="ltr" inputmode="numeric" maxlength="15" data-k="inv:customer.vat" placeholder="3xxxxxxxxxxxxx3"></label>
+      <label class="fld"><span>السجل التجاري (اختياري)</span><input type="text" dir="ltr" inputmode="numeric" data-k="inv:customer.cr"></label>
+      <label class="fld"><span>العنوان</span><textarea rows="2" data-k="inv:customer.address"></textarea></label>
+      <label class="fld"><span>الجوال (اختياري)</span><input type="text" dir="ltr" data-k="inv:customer.phone"></label>
+      <div class="acts"><button class="btn sm" id="btnSaveCust">حفظ العميل للمرات القادمة</button><button class="btn sm danger" id="btnDelCust">حذف من المحفوظين</button></div>
+    </div>
+
+    <div class="pane" id="pane-lines" hidden>
+      <div id="lineList" class="lst"></div>
+      <div class="acts"><button class="btn" id="btnAddLine"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>إضافة بند</button>
+        <select id="presetSel" aria-label="بنود جاهزة"><option value="">إضافة من البنود الجاهزة…</option></select></div>
+    </div>
+
+    <div class="pane" id="pane-extra" hidden>
+      <label class="fld"><span>الملاحظات (سطر لكل ملاحظة)</span><textarea rows="6" id="notesTa"></textarea></label>
+      <div class="grp">
+        <label class="chk"><input type="checkbox" data-k="inv:showQR"> رمز QR الضريبي</label>
+        <label class="chk"><input type="checkbox" data-k="inv:showStamp"> الختم</label>
+        <label class="chk"><input type="checkbox" data-k="inv:showSignature"> التوقيع</label>
+        <label class="chk"><input type="checkbox" data-k="inv:showBank"> بيانات الدفع (من بيانات الشركة)</label>
+      </div>
+      <button class="btn" id="btnQr">فحص محتوى رمز QR</button>
+    </div>
+
+    <div class="sum" id="sum"></div>
+  </aside>
+
+  <main class="main">
+    <div class="ctool">
+      <span class="info" id="pgInfo"></span><div class="grow"></div>
+      <button class="ib" id="zOut" title="تصغير">−</button><span class="info" id="zVal">100%</span><button class="ib" id="zIn" title="تكبير">+</button>
+      <button class="btn sm" id="zFit">ملاءمة</button>
+    </div>
+    <div class="canvas" id="canvas"><div class="sizer" id="sizer"><div class="doc" id="stack"></div></div></div>
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+<div id="dlgRoot"></div>
+
+<script src="js/vendor/qrcode.js"></script>
+<script src="js/brand.js"></script>
+<script src="js/numwords.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/zatca.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
